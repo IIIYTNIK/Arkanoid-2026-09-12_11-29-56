@@ -17,6 +17,16 @@ namespace Arkanoid.Paddle
         private float currentWidthMultiplier = 1f;
         private Coroutine widthEffectRoutine;
 
+        private void OnEnable()
+        {
+            moveAction?.action.Enable();
+        }
+
+        private void OnDisable()
+        {
+            moveAction?.action.Disable();
+        }
+
         private void Update()
         {
             var input = moveAction != null ? moveAction.action.ReadValue<float>() : 0f;

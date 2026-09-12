@@ -1,5 +1,6 @@
 using System;
 using Arkanoid.Core.Interfaces;
+using Arkanoid.Ball;
 using UnityEngine;
 
 namespace Arkanoid.Core

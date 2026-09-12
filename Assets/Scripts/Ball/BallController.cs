@@ -15,7 +15,7 @@ namespace Arkanoid.Ball
     public sealed class BallController : MonoBehaviour
     {
         [SerializeField] private BallConfig config;
-        [SerializeField] private float bottomBoundaryY = -6f;
+        [SerializeField] private float bottomBoundaryZ = -6f;
 
         private Rigidbody rb;
         private float currentBaseSpeed;
@@ -44,7 +44,7 @@ namespace Arkanoid.Ball
             var direction = ClampDeflection(rb.linearVelocity.normalized);
             rb.linearVelocity = direction * targetSpeed;
 
-            if (transform.position.y < bottomBoundaryY) // на 3D-поле "низ" — по факту одна из горизонтальных осей;
+            if (transform.position.z < bottomBoundaryZ) // на 3D-поле "низ" — по факту одна из горизонтальных осей;
             {                                            // финальная ось задаётся ориентацией игрового поля в сцене.
                 HandleFellBelowBoundary();
             }
