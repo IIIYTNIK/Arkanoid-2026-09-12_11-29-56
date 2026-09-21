@@ -14,8 +14,18 @@ namespace Arkanoid.Paddle
         [SerializeField] private PaddleConfig config;
         [SerializeField] private InputActionReference moveAction;
 
+        private Rigidbody rb;
+        private float currentInput;
         private float currentWidthMultiplier = 1f;
         private Coroutine widthEffectRoutine;
+
+        private void Awake()
+        {
+            rb = GetComponent<Rigidbody>();
+
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
 
         private void OnEnable()
         {
@@ -29,15 +39,20 @@ namespace Arkanoid.Paddle
 
         private void Update()
         {
-            var input = moveAction != null ? moveAction.action.ReadValue<float>() : 0f;
-            var delta = input * config.MoveSpeed * Time.deltaTime;
+            // Считываем ввод в Update
+            currentInput = moveAction != null ? moveAction.action.ReadValue<float>() : 0f;
+        }
+        private void FixedUpdate()
+        {
+            // Перемещаем физически в FixedUpdate
+            var delta = currentInput * config.MoveSpeed * Time.fixedDeltaTime;
 
             var halfWidth = (config.BaseWidth * currentWidthMultiplier) * 0.5f;
             var minX = -config.FieldHalfWidth + halfWidth;
             var maxX = config.FieldHalfWidth - halfWidth;
 
-            var newX = Mathf.Clamp(transform.position.x + delta, minX, maxX);
-            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+            var newX = Mathf.Clamp(rb.position.x + delta, minX, maxX);
+            rb.MovePosition(new Vector3(newX, rb.position.y, rb.position.z));
         }
 
         /// <summary>Возвращает -1..+1: где на платформе шарик ударил (для BallController.ReflectOffPaddle).</summary>

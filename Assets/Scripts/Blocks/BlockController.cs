@@ -4,10 +4,6 @@ using UnityEngine;
 
 namespace Arkanoid.Blocks
 {
-    /// <summary>
-    /// Блок не знает про уровни или победу — только сообщает ILevelManager
-    /// "я уничтожен" (требование п.24.13 ТЗ: BlockController не управляет уровнем).
-    /// </summary>
     [RequireComponent(typeof(MeshRenderer))]
     public sealed class BlockController : MonoBehaviour
     {
@@ -18,7 +14,16 @@ namespace Arkanoid.Blocks
 
         private void Awake()
         {
-            currentHp = data.MaxHp;
+            if (meshRenderer == null)
+            {
+                meshRenderer = GetComponent<MeshRenderer>();
+            }
+
+            if (data != null)
+            {
+                currentHp = data.MaxHp;
+            }
+
             RefreshVisual();
         }
 
@@ -37,15 +42,18 @@ namespace Arkanoid.Blocks
 
         private void RefreshVisual()
         {
-            if (data.TryGetStateForHp(currentHp, out var state))
+            if (data != null && data.TryGetStateForHp(currentHp, out var state))
             {
-                meshRenderer.material = state.material;
+                if (meshRenderer != null && state.material != null)
+                {
+                    meshRenderer.material = state.material;
+                }
             }
         }
 
         private void DestroyBlock()
         {
-            if (data.TryGetStateForHp(1, out var finalState)
+            if (data != null && data.TryGetStateForHp(1, out var finalState)
                 && GameServices.TryGet<IScoreManager>(out var scoreManager))
             {
                 scoreManager.AddScore(finalState.scoreValue);
@@ -56,11 +64,9 @@ namespace Arkanoid.Blocks
                 levelManager.NotifyBlockDestroyed();
             }
 
-            if (Random.value <= data.PowerUpDropChance
+            if (data != null && Random.value <= data.PowerUpDropChance
                 && GameServices.TryGet<IPowerUpService>(out var powerUpService))
             {
-                // Конкретный тип PowerUp выбирается PowerUpManager (Developer 2)
-                // через весовую drop-таблицу — BlockController лишь просит "заспавни что-нибудь".
                 powerUpService.SpawnRandomPowerUp(transform.position);
             }
 
