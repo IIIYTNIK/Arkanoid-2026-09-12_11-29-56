@@ -1,20 +1,19 @@
 using UnityEngine;
 
 /// <summary>
-/// Повесьте на Prefab PowerUp'а: визуально отличимый меш (например, Capsule
-/// другого цвета) + Collider с галочкой Is Trigger. Требует Tag "Paddle" на
-/// платформе и Tag "Ball" на мяче.
+/// Игровое поле в плоскости XZ (см. BallController). "Падение" вниз к платформе —
+/// это движение по УБЫВАНИЮ Z, а не по Y.
 /// </summary>
 public sealed class SpeedBallPowerUp : MonoBehaviour
 {
     [SerializeField] private float fallSpeed = 3f;
-    [SerializeField] private float despawnBelowY = -10f;
+    [SerializeField] private float despawnBelowZ = -10f;
 
     private void Update()
     {
-        transform.position += Vector3.down * (fallSpeed * Time.deltaTime);
+        transform.position += Vector3.back * (fallSpeed * Time.deltaTime);
 
-        if (transform.position.y < despawnBelowY)
+        if (transform.position.z < despawnBelowZ)
         {
             Destroy(gameObject);
         }

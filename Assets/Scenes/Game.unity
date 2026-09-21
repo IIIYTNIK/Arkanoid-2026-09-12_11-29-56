@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Arkanoid.Ball.BallController
   config: {fileID: 11400000, guid: c1ed4857b5c87f8419edea0610fc254b, type: 2}
-  bottomBoundaryZ: -6
+  bottomBoundaryZ: -10
 --- !u!54 &26226583
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -652,7 +652,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -2110,7 +2110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5356686543705765659, guid: a8d55803b28054b6c937f7a1d5b45bfc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.09
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5356686543705765659, guid: a8d55803b28054b6c937f7a1d5b45bfc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2228,7 +2228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4833607045606479171, guid: fb4eccde70ece40b089a0efee4b7e28e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.18286
+      value: 1.23
       objectReference: {fileID: 0}
     - target: {fileID: 4833607045606479171, guid: fb4eccde70ece40b089a0efee4b7e28e, type: 3}
       propertyPath: m_LocalPosition.z
