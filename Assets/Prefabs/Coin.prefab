@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.90861, y: 2.18286, z: 4.48}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.08, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848460891250453191}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &8644741849164071001
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -127,7 +127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Coin
   scoreValue: 5
   fallSpeed: 3
-  despawnBelowY: -10
+  despawnBelowZ: -10
+  rotationSpeed: 180
 --- !u!54 &-8099342068456460855
 Rigidbody:
   m_ObjectHideFlags: 0

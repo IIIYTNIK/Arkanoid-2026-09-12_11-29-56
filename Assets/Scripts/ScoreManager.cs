@@ -1,38 +1,49 @@
 using System;
 using UnityEngine;
 
-/// <summary>
-/// Простой singleton для счёта очков. Повесьте этот скрипт на пустой GameObject
-/// "ScoreManager" в сцене Game — он переживёт разные обращения к нему из Block/Coin.
-/// </summary>
-public sealed class ScoreManager : MonoBehaviour
+public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager Instance { get; private set; }
+    private static ScoreManager instance;
 
-    public int CurrentScore { get; private set; }
+    public static ScoreManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<ScoreManager>();
+            }
+            return instance;
+        }
+    }
 
-    /// <summary>Подписывайтесь на это событие в UI, чтобы обновлять текст счёта.</summary>
     public event Action<int> OnScoreChanged;
+    public int CurrentScore => currentScore;
+
+    private int currentScore = 0;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
         {
             Destroy(gameObject);
-            return;
         }
-
-        Instance = this;
     }
 
     public void AddScore(int amount)
     {
-        if (amount <= 0)
-        {
-            return;
-        }
+        currentScore += amount;
+        Debug.Log($"[ScoreManager] Новый счет: {currentScore}. Оповещаем подписчиков UI...");
+        OnScoreChanged?.Invoke(currentScore);
+    }
 
-        CurrentScore += amount;
-        OnScoreChanged?.Invoke(CurrentScore);
+    public void ResetScore()
+    {
+        currentScore = 0;
+        OnScoreChanged?.Invoke(currentScore);
     }
 }
