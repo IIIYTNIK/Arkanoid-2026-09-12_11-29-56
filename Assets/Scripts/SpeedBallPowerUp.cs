@@ -7,12 +7,18 @@ using UnityEngine;
 public sealed class SpeedBallPowerUp : MonoBehaviour
 {
     [SerializeField] private float fallSpeed = 3f;
-    [SerializeField] private float despawnBelowZ = -10f;
+    [SerializeField] private float despawnBelowZ = -10f; // Проверка удаления по оси Z
+    [SerializeField] private float rotationSpeed = 180f;
 
     private void Update()
     {
-        transform.position += Vector3.back * (fallSpeed * Time.deltaTime);
+        // 1. Падение вдоль поля к платформе (по убыванию Z)
+        transform.Translate(Vector3.back * fallSpeed * Time.deltaTime, Space.World);
 
+        // 2. Вращение вокруг своей оси Y
+        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.Self);
+
+        // 3. Проверка выхода за нижнюю границу поля (ось Z)
         if (transform.position.z < despawnBelowZ)
         {
             Destroy(gameObject);
