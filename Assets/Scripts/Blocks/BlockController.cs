@@ -30,34 +30,37 @@ namespace Arkanoid.Blocks
 
         private void BuildFruitVisuals()
         {
-            if (transform.Find("FruitVisual") != null) return;
-
-            var fruitVisualObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            fruitVisualObj.name = "FruitVisual";
-            fruitVisualObj.transform.SetParent(transform, false);
-            fruitVisualObj.transform.localPosition = Vector3.zero;
-            fruitVisualObj.transform.localScale = new Vector3(0.95f, 0.95f, 0.95f);
-
-            if (fruitVisualObj.TryGetComponent<Collider>(out var col))
+            // Прямо меняем меш блока на сферу (фрукт), чтобы кубик стал круглым
+            var meshFilter = GetComponent<MeshFilter>();
+            if (meshFilter == null)
             {
-                Destroy(col);
+                meshFilter = gameObject.AddComponent<MeshFilter>();
             }
 
-            if (fruitVisualObj.TryGetComponent<MeshRenderer>(out var fruitRenderer))
+            var sphereObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            meshFilter.sharedMesh = sphereObj.GetComponent<MeshFilter>().sharedMesh;
+            Destroy(sphereObj);
+
+            if (meshRenderer == null)
             {
-                var fruitColors = new Color[] {
-                    new Color(0.95f, 0.1f, 0.1f),   // Красное яблоко
-                    new Color(0.1f, 0.85f, 0.3f),   // Арбуз
-                    new Color(0.9f, 0.6f, 0.1f),    // Апельсин / тыква
-                    new Color(0.6f, 0.15f, 0.85f)   // Лесные ягоды
-                };
-                int fruitIndex = Mathf.Abs(gameObject.GetInstanceID()) % fruitColors.Length;
-                fruitRenderer.material.color = fruitColors[fruitIndex];
+                meshRenderer = GetComponent<MeshRenderer>();
             }
 
             if (meshRenderer != null)
             {
-                meshRenderer.enabled = false;
+                // Яркие цвета фруктов: Яблоко, Арбуз, Банан, Виноград
+                var fruitColors = new Color[] {
+                    new Color(1.0f, 0.2f, 0.2f),   // Красное яблоко
+                    new Color(0.2f, 0.9f, 0.3f),   // Зеленый арбуз
+                    new Color(1.0f, 0.9f, 0.1f),   // Желтый банан
+                    new Color(0.6f, 0.2f, 0.9f)    // Фиолетовый виноград
+                };
+                int fruitIndex = Mathf.Abs(gameObject.GetInstanceID()) % fruitColors.Length;
+
+                // Создаем новый материал с ярким цветом фрукта
+                var fruitMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard"));
+                fruitMaterial.color = fruitColors[fruitIndex];
+                meshRenderer.material = fruitMaterial;
             }
         }
 
