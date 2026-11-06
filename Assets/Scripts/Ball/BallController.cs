@@ -29,6 +29,54 @@ namespace Arkanoid.Ball
 
             rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+            BuildDwarfVisuals();
+        }
+
+        private void BuildDwarfVisuals()
+        {
+            if (transform.childCount > 0) return;
+
+            // 1. Тело бомж-гнома
+            var bodyObj = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            bodyObj.name = "DwarfBody";
+            bodyObj.transform.SetParent(transform, false);
+            bodyObj.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+            
+            var bodyRenderer = bodyObj.GetComponent<MeshRenderer>();
+            if (bodyRenderer != null)
+            {
+                bodyRenderer.material.color = new Color(0.45f, 0.35f, 0.25f);
+            }
+            if (bodyObj.TryGetComponent<Collider>(out var col)) Destroy(col);
+
+            // 2. Красная шапка гнома
+            var hatObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            hatObj.name = "DwarfHat";
+            hatObj.transform.SetParent(transform, false);
+            hatObj.transform.localPosition = new Vector3(0f, 0.5f, 0f);
+            hatObj.transform.localScale = new Vector3(0.6f, 0.4f, 0.6f);
+
+            var hatRenderer = hatObj.GetComponent<MeshRenderer>();
+            if (hatRenderer != null)
+            {
+                hatRenderer.material.color = new Color(0.85f, 0.15f, 0.1f);
+            }
+            if (hatObj.TryGetComponent<Collider>(out var hatCol)) Destroy(hatCol);
+
+            // 3. Седая борода
+            var beardObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            beardObj.name = "DwarfBeard";
+            beardObj.transform.SetParent(transform, false);
+            beardObj.transform.localPosition = new Vector3(0f, 0.1f, 0.35f);
+            beardObj.transform.localScale = new Vector3(0.5f, 0.3f, 0.2f);
+
+            var beardRenderer = beardObj.GetComponent<MeshRenderer>();
+            if (beardRenderer != null)
+            {
+                beardRenderer.material.color = new Color(0.95f, 0.95f, 0.95f);
+            }
+            if (beardObj.TryGetComponent<Collider>(out var beardCol)) Destroy(beardCol);
         }
 
         private void Start()

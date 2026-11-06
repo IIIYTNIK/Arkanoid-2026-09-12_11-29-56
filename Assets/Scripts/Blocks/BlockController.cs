@@ -49,6 +49,19 @@ namespace Arkanoid.Blocks
                     meshRenderer.material = state.material;
                 }
             }
+
+            // Процедурный окрас блоков под фрукты (яблоки, арбузы, грибы, ягоды)
+            if (meshRenderer != null)
+            {
+                var fruitColors = new Color[] {
+                    new Color(0.9f, 0.15f, 0.1f),  // Красное яблоко
+                    new Color(0.15f, 0.8f, 0.3f),   // Арбуз
+                    new Color(0.85f, 0.55f, 0.2f),  // Лесной гриб
+                    new Color(0.65f, 0.2f, 0.85f)   // Лесные ягоды
+                };
+                int fruitIndex = Mathf.Abs(gameObject.GetInstanceID()) % fruitColors.Length;
+                meshRenderer.material.color = fruitColors[fruitIndex];
+            }
         }
 
         private void DestroyBlock()
