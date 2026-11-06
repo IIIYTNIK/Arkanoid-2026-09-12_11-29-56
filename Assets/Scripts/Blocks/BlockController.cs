@@ -25,6 +25,40 @@ namespace Arkanoid.Blocks
             }
 
             RefreshVisual();
+            BuildFruitVisuals();
+        }
+
+        private void BuildFruitVisuals()
+        {
+            if (transform.Find("FruitVisual") != null) return;
+
+            var fruitVisualObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            fruitVisualObj.name = "FruitVisual";
+            fruitVisualObj.transform.SetParent(transform, false);
+            fruitVisualObj.transform.localPosition = Vector3.zero;
+            fruitVisualObj.transform.localScale = new Vector3(0.95f, 0.95f, 0.95f);
+
+            if (fruitVisualObj.TryGetComponent<Collider>(out var col))
+            {
+                Destroy(col);
+            }
+
+            if (fruitVisualObj.TryGetComponent<MeshRenderer>(out var fruitRenderer))
+            {
+                var fruitColors = new Color[] {
+                    new Color(0.95f, 0.1f, 0.1f),   // Красное яблоко
+                    new Color(0.1f, 0.85f, 0.3f),   // Арбуз
+                    new Color(0.9f, 0.6f, 0.1f),    // Апельсин / тыква
+                    new Color(0.6f, 0.15f, 0.85f)   // Лесные ягоды
+                };
+                int fruitIndex = Mathf.Abs(gameObject.GetInstanceID()) % fruitColors.Length;
+                fruitRenderer.material.color = fruitColors[fruitIndex];
+            }
+
+            if (meshRenderer != null)
+            {
+                meshRenderer.enabled = false;
+            }
         }
 
         public void ApplyDamage(int amount)
